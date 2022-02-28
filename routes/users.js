@@ -2,6 +2,19 @@
 
 const express = require('express')
 
-//set up router
+// setup router
 
-const router = express.Router()
+const router = express.Router();
+
+//set homepage router and welcome message
+
+// Register page
+router.get('/register', (req, res) => res.send('Register'))
+
+
+// login page
+router.get('/login', (req, res) => res.send('Login'))
+
+//export router
+
+module.exports = router
