@@ -2,7 +2,7 @@
 
 const express = require("express");
 
-//require bcryp
+//require bcrypt
 
 const bcrypt = require("bcryptjs");
 
@@ -14,10 +14,13 @@ const router = express.Router();
 
 const User = require("../models/User");
 
+//require passport
+const passport = require("passport");
 //set homepage router and welcome message
 
 // Register page
 router.get("/register", (req, res) => res.render("register"));
+router.get("/login", (req, res) => res.render("login"));
 
 //register handle
 router.post("/register", (req, res) => {
@@ -76,30 +79,45 @@ router.post("/register", (req, res) => {
 
         bcrypt.genSalt(10, (err, salt) =>
           bcrypt.hash(newUser.password, salt, (err, hash) => {
-              if(err) throw err;
+            if (err) throw err;
 
-              //set password to hashed
-              newUser.password = hash
+            //set password to hashed
+            newUser.password = hash;
 
-              //save user
+            //save user
 
-              newUser.save()
-              .then(user => {
-                  req.flash('success_msg', 'You are now registered and can log in')
-                  res.redirect('login')
+            newUser
+              .save()
+              .then((user) => {
+                req.flash(
+                  "success_msg",
+                  "You are now registered and can log in"
+                );
+                res.redirect("login");
               })
-              .catch(err => console.log(err))
-
-
+              .catch((err) => console.log(err));
           })
         );
       }
     });
   }
 });
+//login handle
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/users/login",
+    failureFlash: true,
+  })(req, res, next);
+});
 
-// login page
-router.get("/login", (req, res) => res.render("login"));
+//logout handle
+
+router.get('/logout', (req, res) => {
+  req.logOut()
+  req.flash('success_msg', 'You are logged out')
+  res.redirect('/users/login')
+})
 
 //export router
 

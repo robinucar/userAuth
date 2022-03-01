@@ -10,6 +10,10 @@ const router = express.Router();
 
 router.get('/', (req, res) => res.render('welcome'))
 
+// set dashboard router 
+
+router.get('/dashboard', (req, res) => res.render('dashboard'))
+
 //export router
 
 module.exports = router

@@ -10,7 +10,12 @@ const flash = require('connect-flash');
 
 //require express session
 const session = require('express-session');
+
 const app = express();
+
+//passport config
+const passport = require('passport')
+require('./config/passport')(passport)
 
 // DB Config
 
@@ -39,6 +44,9 @@ app.use(
       saveUninitialized: true
     })
 );
+//passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 //connect flash
 app.use(flash())
