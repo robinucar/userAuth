@@ -8,7 +8,7 @@ const router = express.Router();
 
 //set homepage router and welcome message
 
-router.get('/', (req, res) => res.send('Welcome'))
+router.get('/', (req, res) => res.render('welcome'))
 
 //export router
 
