@@ -2,6 +2,10 @@
 
 const express = require('express')
 
+// require ensureAuthenticated
+
+const { ensureAuthenticated } = require('../config/auth')
+
 // setup router
 
 const router = express.Router();
@@ -12,7 +16,10 @@ router.get('/', (req, res) => res.render('welcome'))
 
 // set dashboard router 
 
-router.get('/dashboard', (req, res) => res.render('dashboard'))
+router.get('/dashboard',ensureAuthenticated, (req, res) => 
+res.render('dashboard', {
+    name: req.user.name
+}))
 
 //export router
 
